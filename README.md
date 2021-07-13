@@ -13,7 +13,8 @@ rsync -va /media/$USER/UDISK/ ~/Videos/Videos_raw/bikecam/
 # merge the files
 
 ```
-./merge.sh ~/Videos/Videos_raw/bikecam/video/
+./merge.sh ~/Videos/Videos_raw/bikecam/video/ > script.sh
+. script.sh
 ```
 
 # upload to youtube
