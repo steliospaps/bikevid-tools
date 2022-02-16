@@ -30,7 +30,7 @@ find . -name  "*A.mp4" -print |sed 's|^\./||'|sort|perl -MTime::Piece -ne 'chomp
     $diff = $t-$t_last;
     #print STDERR "$diff\n";
     if(defined $t_last &&
-      ($diff<=305)){
+      ($diff<=325)){
       push @files, $file;
     } else {
       print join(" ",@files)."\n" unless @files == 0;
