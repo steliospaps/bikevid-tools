@@ -6,7 +6,7 @@ set -o pipefail
 function usage {
   echo '
 usage:
-  '"$0"' <path-to-mp4-files> <output-dir>
+  '"$0"' <path-to-mp4-files> <output-dir> <postfix>
 will identify all files that looks like they are part of a recording 
 (using the timestamp in the filename) and stich them together.
 It will create a video "ride_<original-timestamp>_full.mp4" in the output directory
@@ -15,11 +15,13 @@ set DRY_RUN to no create any files
   exit 1
 }
 
-[[ $# -eq 2 ]] || usage
+[[ $# -eq 3 ]] || usage
 echo "working on $1"
 cd "$1"
 echo "output in $2"
 OUTDIR="$2"
+echo "postfix '$3'"
+POSTFIX="$3"
 [[ -z "${DRY_RUN-}" ]] || echo dry-run mode >&2
 find . -name  "*A.mp4" -print |sed 's|^\./||'|sort|perl -MTime::Piece -ne 'chomp; 
   $file = $_; 
@@ -35,7 +37,7 @@ find . -name  "*A.mp4" -print |sed 's|^\./||'|sort|perl -MTime::Piece -ne 'chomp
     } else {
       print join(" ",@files)."\n" unless @files == 0;
       $target_file = $file;
-      $target_file =~ s/A\.mp4$/_full.mp4/;
+      $target_file =~ s/A\.mp4$/'"$POSTFIX"'_full.mp4/;
       $target_file = "ride_".$target_file;
       @files=($target_file,$file);
     };
